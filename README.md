@@ -34,9 +34,13 @@ The GeneWiki-parser.pl script parses human pathway output from PathVisio in html
 ### Create template at Wikipedia
 
 * Create an account at Wikipedia and login. 
-* .....
+* To create a new page for your template, first decide on a title/URL based on the convention for existing pathway templates. For example, the template for the TCA cycle pathway, with WP id WP78, has the URL https://en.wikipedia.org/wiki/Template:TCACycle_WP78. 
+The URL should be formatted as Template:PathwayName_WPID.
+* Once you decide on a URL, simply paste it into the URL field of your browser. You should get a message saying that the page doesn't exist, and there should be a link for **Start the Template:PathwayName_WPID page.**. Click this link.
+* In the edit field, paste in the contents of the text file generated from the GeneWiki parser. Describe your edits and click **Publish**.
 
-
+Now the imagemap needs some editing before it is ready to use: 
+* Click Edit on the newly created template, and follow the instructions in the checklist at the top, also copied here: 
 * Locate appropriate pathway article and update imagemap default link accordingly. Also consider modifying the "Description" at the very bottom of the template to provide a more descriptive pathway name.
 * Check pathway for "search for" links when hovering and attempt to locate an appropriate wikipedia article. Update imagemap link, link color, and highlight references accordingly. 
 * Check pathway for external links in green and attempt to locate appropriate wikipedia content instead. Update imagemap link, link color, and highlight references accordingly.
