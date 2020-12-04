@@ -47,7 +47,7 @@ Now the imagemap needs some editing before it is ready to use:
 * Check pathway for **search for** links when hovering and attempt to locate an appropriate wikipedia article. Update imagemap link, link color, and highlight references accordingly. 
 * Check pathway for external links in green and attempt to locate appropriate wikipedia content instead. Update imagemap link, link color, and highlight references accordingly.
 
-### Trubleshooting
+### Troubleshooting
 
 The Perl script requires some modules/packages that may not be present in your local installation. In that case, you might get errors while running the script like "Can't locate Switch.pm in @INC (you may need to install the Switch module)". 
 * To install Perl modules, start cpan by typing the command `cpan` in Terminal. This will open the cpan prompt.
