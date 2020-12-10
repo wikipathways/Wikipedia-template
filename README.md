@@ -38,9 +38,17 @@ The GeneWiki-parser.pl script parses human pathway output from PathVisio in html
 The interactive pathway template relies on a figure of the pathway, which has to be uploaded to Wikimedia Commons. 
 
 * Create an account at Wikipedia. This account will also work at Wikimedia Commons. 
-* Go to Wikimedia Commons and make sure you are logged in https://commons.wikimedia.org/wiki/Main_Page
-* .....
-
+* Go to [Wikimedia Commons](https://commons.wikimedia.org/wiki/Main_Page) and make sure you are logged in.
+* Click the **Upload** button on the front page and select the pathway image from the html export. Click **Continue** once the file is uploaded.
+* Under **Release Rights** select **This file is not my own work**. 
+* For **Source** add the WikiPathways URL for the pathway, for example http://www.wikipathways.org/index.php/Pathway:WP78
+* Under **Author** list the authors from the pathway page at WikiPathways. 
+* Select the **Creative Commons CC0 Waiver** for license.
+* Click **Next** and for **Description** add a one-sentence description of the pathway, for example "The citric acid cycle, also known as the tricarboxylic acid cycle (TCA cycle) or the Krebs cycle. Produced at WikiPathways."
+* For **Title**, make sure the filename corresponds to this format "PathwayName_WPID.png", for example "TCACycle_WP78.png". 
+* Under **Date** enter the original creation date of the pathway from WikiPathways. This is available in the **History** on the pathway page.
+* Under **Categories** you can add categories relevant to the pathway topic, to make the file easier to find. For example, "Citric acid cycle", "Biochemistry diagrams", "Images from WikiPathways", "Metabolic pathways", "Homo sapiens".
+* Click **Publish**
 
 ### Create template at Wikipedia
 
