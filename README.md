@@ -33,9 +33,18 @@ The GeneWiki-parser.pl script parses human pathway output from PathVisio in html
 * The output is a text file with imagemap and wiki template syntax, with the added extension ".txt".
 * For problems with running the script related to your Perl installation, see Troubleshooting below.
 
+### Upload the pathway image to Wikimedia Commons
+
+The interactive pathway template relies on a figure of the pathway, which has to be uploaded to Wikimedia Commons. 
+
+* Create an account at Wikipedia. This account will also work at Wikimedia Commons. 
+* Go to Wikimedia Commons and make sure you are logged in https://commons.wikimedia.org/wiki/Main_Page
+* .....
+
+
 ### Create template at Wikipedia
 
-* Create an account at Wikipedia and login. 
+* Navigate to Wikipedia and make sure you are logged in. 
 * To create a new page for your template, first decide on a title/URL based on the convention for existing pathway templates. For example, the template for the TCA cycle pathway, with WP id WP78, has the URL https://en.wikipedia.org/wiki/Template:TCACycle_WP78. 
 The URL should be formatted as Template:PathwayName_WPID.
 * Once you decide on a URL, simply paste it into the URL field of your browser. You should get a message saying that the page doesn't exist, and there should be a link for **Start the Template:PathwayName_WPID page.**. Click this link.
