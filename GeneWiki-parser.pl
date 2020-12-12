@@ -128,18 +128,19 @@ while (my $line = <HTML>)
 				if ($newlink =~ m/biogps/)
 					{
 					$color = 'red';
-					$newlink =~ s/#Interactive_pathway_map go to/ search for/;
+					$newlink =~ s/#Interactive_pathway_map Go to article/ search for/;
 					} 
 				else 
 					{
 					$newlink =~ m/wiki\/(.+)#Interactive/;
 					$id = $1;
+					$newlink = $id."|Go to article";
       				$color = 'blue';
 					}
       			}
       		case "En"
       			{
-      			print "system is Ensembl\n";
+      			#print "system is Ensembl\n";
       			$xref =~ m/En_(.+)/;
       			$id = $1;
       			my $entrez = BackpageLookup($xref, 'Entrez Gene'); #Use full Xref since that's the name of the backpage file
@@ -169,7 +170,7 @@ while (my $line = <HTML>)
       			}
       		case "S"
       			{
-      			#print "system is Uniprot\n";
+      			#print "system is Uniprot-TrEMBL\n";
       			$xref =~ m/S_(.+)/;
       			$id = $1;
       			my $entrez = BackpageLookup($xref, 'Entrez Gene'); #Use full Xref since that's the name of the backpage file
@@ -177,6 +178,7 @@ while (my $line = <HTML>)
       				{
       				$newlink = $uniprot.$id." Go to UniProt";
       				$color = 'green';
+      				print $newlink;
       				}
       			else
       				{
@@ -187,11 +189,13 @@ while (my $line = <HTML>)
 						{
 						$color = 'red';
 						$newlink =~ s/#Interactive_pathway_map go to/ search for/;
+						print $newlink;
 						} 
 					else 
 						{
       					$newlink =~ m/wiki\/(.+)#Interactive/;
 						$id = $1;
+						$newlink = $id."|Go to article";
  						$color = 'blue';
 						}
       				}
@@ -259,6 +263,7 @@ while (my $line = <HTML>)
 				if ($wp eq "null"){
 					$newlink = $hmdb.$id." Go to HMDB";
 					$color = 'green';
+					#print "newlink is $newlink\n";
 					}
 				else {
 					$id = $wp;
@@ -273,8 +278,10 @@ while (my $line = <HTML>)
       			$id = $1;
 				my $wp = BackpageLookup($xref, 'Wikipedia');
 				if ($wp eq "null"){
+					
 					$newlink = $cas.$id." Go to CAS";
 					$color = 'green';
+					print "newlink is $newlink\n";
 					}
 				else {
 					$id = $wp;
@@ -436,7 +443,7 @@ desc none
 for my $i ( 0 .. $#linkArray ) {
 	my $left = $linkArray[$i][0];
     my $right = $imgWidth - $left + 5;
-	my $top = $linkArray[$i][3] -15;# -$i*1;
+	my $top = $linkArray[$i][3] - 15;# -$i*1;
 	my $width = $linkArray[$i][2] - $linkArray[$i][0];
 	my $color = $linkArray[$i][4];
 	print OUTFILE "{{Annotation|0|0|[[<div style=\"display:block; width:".$width."px; height:0px; overflow:hidden; position:relative; left:".$left."px; top:".$top."px; background:transparent; border-top:3px ".$color." solid\"></div>]]}}\n";       
@@ -523,13 +530,12 @@ sub BackpageLookup
 {
 	my ($xref, $system) = @_;
 	chdir("backpage");
-	my $dir = getcwd;
-	print "Directory is: $dir\n";
+	#my $dir = getcwd;
 	my $hit = "null";
 	
 	my $backpage = $xref.".html";
 	
-	if ($system = 'Entrez Gene')
+	if ($system eq 'Entrez Gene')
 		{
 		
 	unless ( open(BACK, $backpage) )
@@ -539,18 +545,17 @@ sub BackpageLookup
         exit;
        }
        
-    while (my $line = <BACK>)
+    while (my $line = <BACK>)       
     	{
     		if ($line =~ m/http:\/\/www.ncbi.nlm.nih.gov\/gene\//)
     		#if ($line =~ m/<\/a>, $system<br></)
     		{
-    		$line =~ m/http:\/\/www.ncbi.nlm.nih.gov\/gene\/(.+?)"/;
+    		$line =~ m/http:\/\/www.ncbi.nlm.nih.gov\/gene\/(\d+)"/;
     		#$line =~ m/.+>(.+?)<\/a>, $system<br></;
     		$hit = $1;
-		#$hit =~ s/ /_/g;
+			#$hit =~ s/ /_/g;
     		}
     	}
-    	print "from BackpageLookup: hit\t$hit\n";
     	}
        return $hit;
        
