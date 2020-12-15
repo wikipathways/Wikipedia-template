@@ -58,12 +58,19 @@ The URL should be formatted as Template:PathwayName_WPID.
 * Once you decide on a URL, simply paste it into the URL field of your browser. You should get a message saying that the page doesn't exist, and there should be a link for **Start the Template:PathwayName_WPID page.**. Click this link.
 * In the edit field, paste in the contents of the text file generated from the GeneWiki parser. Describe your edits and click **Publish**.
 
-*Note: the following section is incomplete.*
-Now the imagemap needs some editing before it is ready to use: 
+The imagemap needs some updates before it is ready to use. The goal is to have as many links as possible link to Wikipedia articles, instead of external links. The script attempts to do this, but is not always successful.
+Data nodes in the template are displayed in different colors depending on the type of link (blue=internal, green=external, red=missing). In addition to updating the actual link, the link color also needs to be updated. Finally, highlight references need to be updated as well. 
 * Click **Edit** on the newly created template, and follow the instructions in the checklist at the top, also listed here: 
-* Locate appropriate pathway article and update imagemap default link accordingly. 
-  - Check the for `search for` links when hovering and attempt to locate an appropriate wikipedia article. Update imagemap link, link color, and highlight references accordingly. 
-  - Check pathway for external links in green and attempt to locate appropriate wikipedia content instead. Update imagemap link, link color, and highlight references accordingly.
+### Update link ###
+* Look for links to external resources, for example **HMDB**: `[http://www.hmdb.ca/metabolites/HMDB0001201 Go to HMDB]` for **Guanosine diphosphate**.
+* Try to locate appropriate Wikipedia article: **https://en.wikipedia.org/wiki/Guanosine_diphosphate**. To update the link to an internal Wikipedia link, simply replace the external URL with the last part of the Wikipedia URL, `Guanosine_diphosphate`, switch the square brackets to double square brackets, and add a `\` symbol between the link and the link title, like this: `[[Guanosine_diphosphate|Go to HMDB]]`
+* Repeat the above setps for any `search for` link.
+### Update link color ###
+* To update the highlight color, first locate the `annotation` rectangle in the template that corresponds to the coordinates of the `rect` object where the link is defined. For example `rect 451.54940095851265 725.8886391664189 482.54940095851094 740.2596412986151 [[Guanosine_diphosphate|Go to HMDB]]` corresponds to `{{Annotation|0|0|[[<div style="display:block; width:30.9999999999983px; height:0px; overflow:hidden; position:relative; left:451.54940095851265px; top:725.259641298615px; background:transparent; border-top:3px green solid"></div>]]}}`. Searching for the first coordinate in the `rect` object works because it corresponds to the left coordinate of the `annotation` object. Switch the link color to `blue`.
+### Update reference highlighting ###
+* Locate the annotation reference highlighting by searching for the original identifier of the node, for example `HMDB0001201`. For each mention, replace the identifier with the Wikipedia name, for example `Guanosine diphosphate`.
+
+* Note that sometimes an entity is present more than once in the template, which is seen as more than one `rect` element and highlight references in the format `HMDB0001201_alt1`. In these cases, each entity needs to be updated in terms of the link, link color and highlight references.
 * Consider modifying the `|Description=` entry at the very bottom of the template to provide a more descriptive pathway name.
 
 ### Troubleshooting
