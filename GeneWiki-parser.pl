@@ -77,8 +77,8 @@ my %seen = ();
 my @linkArray = ();
 my $color;
 
-print OUTFILE "<noinclude>\n<!--\nChecklist:\n1. Locate appropriate pathway article and update imagemap default link accordingly. Also consider modifying the \"Description\" at the very bottom of the template to provide a more descriptive pathway name.\n2. Check pathway for \"search for\" links when hovering and attempt to locate an appropriate wikipedia article. Update imagemap link, link color, and highlight references accordingly. \n3. Check pathway for external links in green and attempt to locate appropriate wikipedia content instead. Update imagemap link, link color, and highlight references accordingly.\n4. Delete this checklist from the template :)\n-->\n"; 
-print OUTFILE "{{Documentation|Template:Interactive_pathway_maps\/doc}}<\/noinclude>{{{header|\'\'Click on genes, proteins and metabolites below to link to respective articles.\'\' <ref name=\"WikiPathways\">The interactive pathway map can be edited at WikiPathways: {{cite web | url = http:\/\/www.wikipathways.org\/index.php\/Pathway:$WPID | title = $pathway | author =  | date = | work = | publisher = | pages = | accessdate = }}</ref> }}}\n\n<div style=\"overflow:auto\; width:{{{width}}}px\; height:{{{height}}}px\">\n\n"; 
+print OUTFILE "<noinclude>{{Interactive pathway maps}}\n<!--\nChecklist:\n1. Locate appropriate pathway article and update imagemap default link accordingly. Also consider modifying the \"Description\" at the very bottom of the template to provide a more descriptive pathway name.\n2. Check pathway for \"search for\" links when hovering and attempt to locate an appropriate wikipedia article. Update imagemap link, link color, and highlight references accordingly. \n3. Check pathway for external links in green and attempt to locate appropriate wikipedia content instead. Update imagemap link, link color, and highlight references accordingly.\n4. Delete this checklist from the template :)\n-->\n"; 
+print OUTFILE "{{Documentation|Template:Interactive_pathway_maps\/doc}}<\/noinclude>{{{header|\'\'Click on genes, proteins and metabolites below to link to respective articles.\'\' <ref name=\"WikiPathways\"  group=\"§\">The interactive pathway map can be edited at WikiPathways: {{cite web | url = http:\/\/www.wikipathways.org\/index.php\/Pathway:$WPID | title = $pathway | author =  | date = | work = | publisher = | pages = | accessdate = }}</ref> }}}\n\n<div style=\"overflow:auto\;{{#if:{{{width|}}}|width:{{{width}}}px\;}}{{#if:{{{height|}}}|height:{{{height}}}px}}\">\n";
 
 while (my $line = <HTML>)
       {
@@ -90,7 +90,8 @@ while (my $line = <HTML>)
       		$line =~ s/" usemap="#pathwaymap" width="(\d+)" height="(\d+)"><\/IMG>/|right|alt=/;
 			$imgWidth = $1;
 			$imgHeight = $2;
-			print OUTFILE "{{Preview Crop\n|Image={{Annotated image |float=none|image-width=".$imgWidth."|annot-color=white|imagemap=<imagemap>\n";
+			#print OUTFILE "{{Preview Crop\n|Image={{Annotated image |float=none|image-width=".$imgWidth."|annot-color=white|imagemap=<imagemap>\n";
+    		print OUTFILE "{{CSS image crop|magnify-link=File:".$pathway.".png\n|Image={{Annotated image |float=none|image-width=".$imgWidth."|annot-color=white|imagemap=<imagemap>\n";
     		chomp $line;
      		$line .= $pathway;
      		$line .="\n";
@@ -127,20 +128,21 @@ while (my $line = <HTML>)
 				$newlink = FetchArticleURL($newlink);
 				if ($newlink =~ m/biogps/)
 					{
+					#print "matched biogps";
 					$color = 'red';
-					$newlink =~ s/#Interactive_pathway_map Go to article/ search for/;
+					$newlink =~ s/#Interactive_pathway_map go to/ search for/;
 					} 
 				else 
 					{
 					$newlink =~ m/wiki\/(.+)#Interactive/;
 					$id = $1;
-					$newlink = $id."|Go to article";
+					$newlink = "[".$id."|Go to article]";
       				$color = 'blue';
 					}
       			}
       		case "En"
       			{
-      			#print "system is Ensembl\n";
+      			print "system is Ensembl\n";
       			$xref =~ m/En_(.+)/;
       			$id = $1;
       			my $entrez = BackpageLookup($xref, 'Entrez Gene'); #Use full Xref since that's the name of the backpage file
@@ -170,7 +172,7 @@ while (my $line = <HTML>)
       			}
       		case "S"
       			{
-      			#print "system is Uniprot-TrEMBL\n";
+      			#print "system is Uniprot\n";
       			$xref =~ m/S_(.+)/;
       			$id = $1;
       			my $entrez = BackpageLookup($xref, 'Entrez Gene'); #Use full Xref since that's the name of the backpage file
@@ -178,7 +180,6 @@ while (my $line = <HTML>)
       				{
       				$newlink = $uniprot.$id." Go to UniProt";
       				$color = 'green';
-      				print $newlink;
       				}
       			else
       				{
@@ -189,13 +190,11 @@ while (my $line = <HTML>)
 						{
 						$color = 'red';
 						$newlink =~ s/#Interactive_pathway_map go to/ search for/;
-						print $newlink;
 						} 
 					else 
 						{
       					$newlink =~ m/wiki\/(.+)#Interactive/;
 						$id = $1;
-						$newlink = $id."|Go to article";
  						$color = 'blue';
 						}
       				}
@@ -263,7 +262,6 @@ while (my $line = <HTML>)
 				if ($wp eq "null"){
 					$newlink = $hmdb.$id." Go to HMDB";
 					$color = 'green';
-					#print "newlink is $newlink\n";
 					}
 				else {
 					$id = $wp;
@@ -271,6 +269,7 @@ while (my $line = <HTML>)
 					$color = 'blue';
 					}
 				}
+				
       		case "Ca"
       			{
       			#print "system is CAS\n";
@@ -278,10 +277,8 @@ while (my $line = <HTML>)
       			$id = $1;
 				my $wp = BackpageLookup($xref, 'Wikipedia');
 				if ($wp eq "null"){
-					
 					$newlink = $cas.$id." Go to CAS";
 					$color = 'green';
-					print "newlink is $newlink\n";
 					}
 				else {
 					$id = $wp;
@@ -519,7 +516,7 @@ for my $i ( 0 .. $#linkArray ) {
 }
 print OUTFILE "|#default=".$oleft."\n}}\n";
 
-print OUTFILE "|Location=left\n|Description=".$pathway."  [http:\/\/www.wikipathways.org\/index.php\/Pathway:$WPID edit]\n}}\n</div><noinclude>{{reflist}}[[Category:WikiPathways]]</noinclude>";
+print OUTFILE "|Location=left\n|Description=".$pathway."  [http:\/\/www.wikipathways.org\/index.php\/Pathway:$WPID edit]\n}}\n{{clear}}{{reflist|group=\"§\"}}\n</div><noinclude>{{reflist}}[[Category:WikiPathways]]</noinclude>";
 close OUTFILE;
 close HTML;
 
@@ -530,7 +527,7 @@ sub BackpageLookup
 {
 	my ($xref, $system) = @_;
 	chdir("backpage");
-	#my $dir = getcwd;
+	my $dir = getcwd;
 	my $hit = "null";
 	
 	my $backpage = $xref.".html";
@@ -545,17 +542,19 @@ sub BackpageLookup
         exit;
        }
        
-    while (my $line = <BACK>)       
+    while (my $line = <BACK>)
     	{
     		if ($line =~ m/http:\/\/www.ncbi.nlm.nih.gov\/gene\//)
+    		
     		#if ($line =~ m/<\/a>, $system<br></)
     		{
-    		$line =~ m/http:\/\/www.ncbi.nlm.nih.gov\/gene\/(\d+)"/;
+    		$line =~ m/http:\/\/www.ncbi.nlm.nih.gov\/gene\/(.+?)/;
     		#$line =~ m/.+>(.+?)<\/a>, $system<br></;
     		$hit = $1;
-			#$hit =~ s/ /_/g;
+		#$hit =~ s/ /_/g;
     		}
     	}
+    	print "from BackpageLookup: hit\t$hit\n";
     	}
        return $hit;
        
